@@ -1,31 +1,36 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import type { Product } from "@/components/ProductComponent";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
   // ✅ Correctly destructure id from params (no React.use)
-  const { id } = params;
+  const { id } = use(params);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  console.log(id);
 
   useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-        const data = await res.json();
+    fetch(`https://fakestoreapi.com/products/${id}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch product. Status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Fetched product:", data);
         setProduct(data);
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProductDetails();
+      })
+      .catch((err) => {
+        console.error("Error fetching product:", err);
+        setProduct(null);
+      })
+      .finally(() => setLoading(false));
   }, [id]);
 
   // 🛒 Add to Cart Function
