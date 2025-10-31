@@ -86,7 +86,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center px-6 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center px-6 md:py-12 pb-25">
       <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-8 flex flex-col md:flex-row gap-8 w-full max-w-4xl">
         {/* Product Image */}
         <div className="relative w-full md:w-1/2 h-80 bg-gray-100 dark:bg-gray-800 flex items-center justify-center rounded-xl overflow-hidden">
