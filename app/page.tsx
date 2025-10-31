@@ -9,7 +9,6 @@ export default function Home() {
   const [sortOrder, setSortOrder] = useState("default");
 
   useEffect(() => {
-    // ✅ Check if products already exist in localStorage
     const storedProducts = localStorage.getItem("products");
 
     if (storedProducts) {
@@ -17,19 +16,18 @@ export default function Home() {
         const parsed = JSON.parse(storedProducts);
         setProducts(parsed);
         setLoading(false);
-        return; // ✅ Skip API call if cached data is available
+        return;
       } catch (err) {
         console.error("Error parsing stored products:", err);
       }
     }
 
-    // ✅ Fetch products from API if not cached
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched products:", data);
         setProducts(data);
-        localStorage.setItem("products", JSON.stringify(data)); // ✅ Save to localStorage
+        localStorage.setItem("products", JSON.stringify(data));
       })
       .catch((err) => console.error("Error fetching products:", err))
       .finally(() => setLoading(false));
@@ -39,7 +37,6 @@ export default function Home() {
     return <ProductCardSkeleton />;
   }
 
-  // ✅ Apply sorting based on selected order
   const sortedProducts = [...products].sort((a, b) => {
     if (sortOrder === "lowToHigh") return a.price - b.price;
     if (sortOrder === "highToLow") return b.price - a.price;
@@ -52,7 +49,6 @@ export default function Home() {
         Featured Products
       </h2>
 
-      {/* ✅ Sort Dropdown */}
       <div className="flex gap-2 pb-4 justify-center">
         <select
           value={sortOrder}
@@ -65,7 +61,6 @@ export default function Home() {
         </select>
       </div>
 
-      {/* ✅ Use sortedProducts instead of products */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {sortedProducts.map((product) => (
           <ProductComponent key={product.id} product={product} />
@@ -87,17 +82,14 @@ function ProductCardSkeleton() {
             key={i}
             className="bg-white dark:bg-gray-900 shadow-md rounded-2xl p-4 flex flex-col space-y-4 hover:shadow-lg transition-shadow"
           >
-            {/* Image skeleton */}
             <div className="flex justify-center items-center h-64 bg-gray-100 dark:bg-gray-800 rounded-xl" />
 
-            {/* Text skeletons */}
             <div className="space-y-3">
               <Skeleton className="h-5 w-3/4 bg-gray-200 dark:bg-gray-700" />
               <Skeleton className="h-4 w-full bg-gray-200 dark:bg-gray-700" />
               <Skeleton className="h-4 w-2/3 bg-gray-200 dark:bg-gray-700" />
             </div>
 
-            {/* Price and Button skeleton */}
             <div className="flex justify-between items-center mt-auto">
               <Skeleton className="h-6 w-16 rounded-md bg-gray-200 dark:bg-gray-700" />
               <Skeleton className="h-8 w-24 rounded-md bg-gray-300 dark:bg-gray-600" />

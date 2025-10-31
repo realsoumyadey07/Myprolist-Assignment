@@ -57,7 +57,6 @@ export default function Page() {
         </div>
       ) : (
         <div className="w-full max-w-7xl bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 space-y-6">
-          {/* Cart Items */}
           <div className="space-y-10">
             {cartItems.map((item) => (
               <div
@@ -85,7 +84,6 @@ export default function Page() {
                 </div>
 
                 <div className="flex items-center gap-4 mt-4 sm:mt-0">
-                  {/* Quantity controls */}
                   <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-2">
                     <button
                       onClick={() => updateQuantity(item.id, -1)}
@@ -104,7 +102,6 @@ export default function Page() {
                     </button>
                   </div>
 
-                  {/* Remove */}
                   <button
                     onClick={() => handleRemove(item.id)}
                     className="text-red-500 hover:text-red-600 transition"
@@ -116,7 +113,6 @@ export default function Page() {
             ))}
           </div>
 
-          {/* Summary Section */}
           <div className="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 dark:border-gray-800 pt-6">
             <div className="text-lg font-medium text-gray-800 dark:text-gray-200">
               Subtotal:

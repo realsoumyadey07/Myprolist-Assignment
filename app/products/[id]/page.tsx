@@ -8,7 +8,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  // ✅ Correctly destructure id from params (no React.use)
   const { id } = use(params);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +32,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // 🛒 Add to Cart Function
   const addToCart = (product: Product) => {
     try {
       const storedCart = localStorage.getItem("cart");
@@ -88,7 +86,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center px-6 md:py-12 pb-25">
       <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-8 flex flex-col md:flex-row gap-8 w-full max-w-4xl">
-        {/* Product Image */}
         <div className="relative w-full md:w-1/2 h-80 bg-gray-100 dark:bg-gray-800 flex items-center justify-center rounded-xl overflow-hidden">
           <Image
             src={product.image}
@@ -99,7 +96,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           />
         </div>
 
-        {/* Product Details */}
         <div className="flex flex-col justify-between w-full md:w-1/2">
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4 leading-snug">

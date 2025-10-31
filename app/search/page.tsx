@@ -6,7 +6,6 @@ import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ProductComponent, { Product } from "@/components/ProductComponent";
 
-// ✅ Wrapped in Suspense Boundary
 export default function PageWrapper() {
   return (
     <Suspense fallback={<div className="text-center py-10 text-gray-500">Loading search...</div>}>
@@ -22,7 +21,6 @@ function SearchPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
-  // ✅ Load products from localStorage
   useEffect(() => {
     const storedProducts = localStorage.getItem("products");
     if (storedProducts) {
@@ -30,13 +28,11 @@ function SearchPage() {
     }
   }, []);
 
-  // ✅ Sync with URL — when user searches from navbar
   useEffect(() => {
     const currentQuery = searchParams.get("query") || "";
     setQuery(currentQuery);
   }, [searchParams]);
 
-  // ✅ Filter products when query or products change
   useEffect(() => {
     if (!query.trim()) {
       setFilteredProducts([]);
@@ -53,7 +49,6 @@ function SearchPage() {
     setFilteredProducts(filtered);
   }, [query, products]);
 
-  // ✅ Handle input typing + URL update (for mobile input)
   const handleSearchChange = (value: string) => {
     setQuery(value);
 
@@ -69,7 +64,6 @@ function SearchPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 px-6 py-5 flex flex-col items-center">
-      {/* 🔍 Mobile Search Bar */}
       <div className="relative w-full mb-10 md:hidden flex">
         <Search
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
@@ -84,7 +78,6 @@ function SearchPage() {
         />
       </div>
 
-      {/* 🧾 Search Results */}
       {query.trim() === "" ? (
         <div className="flex flex-col items-center justify-center mt-10 text-center text-gray-600 dark:text-gray-400">
           <Search size={48} className="mb-4 opacity-70" />
