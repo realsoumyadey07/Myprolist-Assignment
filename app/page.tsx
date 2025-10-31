@@ -6,9 +6,10 @@ import ProductComponent, { Product } from "@/components/ProductComponent";
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sortOrder, setSortOrder] = useState("default");
 
   useEffect(() => {
-    // Check if products already exist in localStorage
+    // ✅ Check if products already exist in localStorage
     const storedProducts = localStorage.getItem("products");
 
     if (storedProducts) {
@@ -38,22 +39,39 @@ export default function Home() {
     return <ProductCardSkeleton />;
   }
 
-  return (
-    <>
-      {products.length > 0 && (
-        <section className="md:px-10 py-5 px-5 bg-gray-50 dark:bg-gray-950 min-h-screen">
-          <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-5 text-center">
-            Featured Products
-          </h2>
+  // ✅ Apply sorting based on selected order
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === "lowToHigh") return a.price - b.price;
+    if (sortOrder === "highToLow") return b.price - a.price;
+    return 0;
+  });
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <ProductComponent key={product.id} product={product} />
-            ))}
-          </div>
-        </section>
-      )}
-    </>
+  return (
+    <section className="md:px-10 py-5 px-5 bg-gray-50 dark:bg-gray-950 min-h-screen">
+      <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-5 text-center">
+        Featured Products
+      </h2>
+
+      {/* ✅ Sort Dropdown */}
+      <div className="flex gap-2 pb-4 justify-center">
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+        >
+          <option value="default">Sort by: Default</option>
+          <option value="lowToHigh">Price: Low to High</option>
+          <option value="highToLow">Price: High to Low</option>
+        </select>
+      </div>
+
+      {/* ✅ Use sortedProducts instead of products */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {sortedProducts.map((product) => (
+          <ProductComponent key={product.id} product={product} />
+        ))}
+      </div>
+    </section>
   );
 }
 
